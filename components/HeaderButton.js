@@ -1,14 +1,40 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const HeaderButton = ({ text }) => {
+export default function HeaderButton({ text, selectedBtn, pressHandler }) {
   return (
-    <View>
-      <TouchableOpacity>
-        <Text>{text}</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity
+      onPress={() => pressHandler(text)}
+      style={selectedBtn === text ? styles.containerSelected : styles.container}
+    >
+      <Text style={selectedBtn === text ? styles.textSelected : styles.text}>
+        {text}
+      </Text>
+    </TouchableOpacity>
   );
-};
+}
 
-export default HeaderButton;
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "white",
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 30,
+  },
+  text: {
+    color: "black",
+    fontSize: 15,
+    fontWeight: "900",
+  },
+  containerSelected: {
+    backgroundColor: "black",
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 30,
+  },
+  textSelected: {
+    color: "white",
+    fontSize: 15,
+    fontWeight: "900",
+  },
+});

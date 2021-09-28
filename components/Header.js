@@ -1,14 +1,31 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import HeaderButton from "./HeaderButton";
 
-const Header = () => {
+export default function Header() {
+  const [selectedBtn, setSelectedBtn] = useState("Delivery");
+  const pressHandler = (text) => {
+    setSelectedBtn(text);
+  };
   return (
-    <View>
-      <HeaderButton text={"Delivery"} />
-      <HeaderButton text={"Pickup"} />
+    <View style={styles.container}>
+      <HeaderButton
+        text={"Delivery"}
+        pressHandler={pressHandler}
+        selectedBtn={selectedBtn}
+      />
+      <HeaderButton
+        text={"Pickup"}
+        pressHandler={pressHandler}
+        selectedBtn={selectedBtn}
+      />
     </View>
   );
-};
+}
 
-export default Header;
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+});
