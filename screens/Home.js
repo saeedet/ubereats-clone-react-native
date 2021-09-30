@@ -5,39 +5,32 @@ import Categories from "../components/Categories";
 import Header from "../components/Header";
 import RestaurantItem from "../components/RestaurantItem";
 import SearchBar from "../components/SearchBar";
-import axios from "axios";
+import { REACT_NATIVE_YELP_API_KEY } from "@env";
 
-const YELP_API_KEY =
-  "LBBl5bds53DdxAF2VgBfUzP2zTCxACQGVbUmQSE12II4TmxMLKRCPP5szU1JFxpgxi-4GYwbPB1RjSw30z-tlsAeB-nEjKYxS4geBosQcY5r1b-hFziX-I4ZZaZSYXYx";
-const yelpUrl = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurants&location=Sydney`;
 const options = {
   headers: {
-    Authorization: `Bearer ${YELP_API_KEY}`,
+    Authorization: `Bearer ${REACT_NATIVE_YELP_API_KEY}`,
   },
 };
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState(null);
   const [errors, setErrors] = useState(null);
+  const [city, setCity] = useState("LosAngeles");
+
   useEffect(() => {
     const getRestaurantsData = async () => {
-      //   await axios
-      //     .get(yelpUrl, options)
-      //     .then((response) => {
-      //       setRestaurants(response.data.businesses);
-      //     })
-      await fetch(yelpUrl, options)
+      const yelpUrl = `https://api.yelp.com/v3/businesses/search?term=restaurants&location=${city}`;
+
+      fetch(yelpUrl, options)
         .then((res) => res.json())
         .then((json) => setRestaurants(json.businesses))
         .catch((err) => {
-          setErrors("err happend bro");
+          setErrors("Couldn't fetch the data!! No good Bruh!");
         });
-      //   await fetch(yelpUrl, options)
-      //     .then((res) => res.json())
-      //     .then((json) => setRestaurants(json.businesses));
     };
     getRestaurantsData();
-  }, []);
+  }, [city]);
 
   return (
     <View>
@@ -57,11 +50,6 @@ export default function Home() {
               rating={item.rating}
             />
           ))}
-        {/* <RestaurantItem />
-        <RestaurantItem />
-        <RestaurantItem />
-        <RestaurantItem />
-        <RestaurantItem /> */}
       </ScrollView>
     </View>
   );
